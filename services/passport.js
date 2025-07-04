@@ -23,18 +23,16 @@ passport.use(
             callbackURL: '/auth/google/callback', //send user back to app
             proxy: true
         }, 
-        (accessToken, refreshToken, profile, done) => { //access token -> tell google that we are allowed from user to modified/etc with their info/smth
-            User.findOne({ googleID: profile.id }).then((existingUser) => {
-                if (existingUser) {    
-                    // already have the account -> don't create a new user    
-                    done(null, existingUser);
-                } else {    
-                    // no record of account -> create a new user    
-                    new User({ googleID: profile.id })
-                        .save()
-                        .then(user => done(null, user));    
-                }       
-            });
+        async (accessToken, refreshToken, profile, done) => { //access token -> tell google that we are allowed from user to modified/etc with their info/smth
+            const existingUser = await User.findOne({ googleID: profile.id })
+            if (existingUser) {    
+                // already have the account -> don't create a new user    
+                return done(null, existingUser);
+            }
+            
+            // no record of account -> create a new user    
+            const user = await new User({ googleID: profile.id }).save()
+            done(null, user); //null -> no error, user -> user that we just created
         }
     )
 ); // () pass some configuration options to GoogleStrategy
