@@ -12,7 +12,7 @@ passport.serializeUser((user, done) => { //user -> user that we just created/pul
 passport.deserializeUser((id, done) => {
     User.findById(id).then(user => {
         done(null, user);
-    })    
+    });    
 });
 
 passport.use(
@@ -31,7 +31,7 @@ passport.use(
             }
             
             // no record of account -> create a new user    
-            const user = await new User({ googleID: profile.id }).save()
+            const user = await new User({ googleID: profile.id }).save();
             done(null, user); //null -> no error, user -> user that we just created
         }
     )

@@ -7,7 +7,7 @@ export const fetchUser = () => async dispatch => {
     dispatch({ type: FETCH_USER, payload: res.data });
 };
 
-export const handleToken = (token) => async dispatch => { //action creater -> communicate with backend
+export const handleToken = token => async dispatch => { //action creater -> communicate with backend
     const res = await axios.post('/api/stripe', token);
 
     dispatch({ type: FETCH_USER, payload: res.data }); //update user credits
