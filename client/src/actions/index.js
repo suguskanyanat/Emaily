@@ -12,3 +12,10 @@ export const handleToken = token => async dispatch => { //action creater -> comm
 
     dispatch({ type: FETCH_USER, payload: res.data }); //update user credits
 };
+
+export const submitSurvey = (values, history) => async dispatch => {
+    const res = await axios.post('/api/surveys', values);
+
+    history.push('/surveys');
+    dispatch({ type: FETCH_USER, payload: res.data });
+};
